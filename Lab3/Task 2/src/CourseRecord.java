@@ -6,11 +6,22 @@ public class CourseRecord {
     public int rooms;
 
     public CourseRecord(String code, String title, int credit, String instructor, int rooms) {
-        this.code = code;
-        this.title = title;
-        this.credit = credit;
-        this.instructor = instructor;
-        this.rooms = rooms;
+        try {
+            if ((code.startsWith("CS") && code.length() != 5)
+                    || (code.startsWith("CIS") && code.length() != 6)
+                    || rooms <= 0
+                    || (credit < 1 || credit > 3))
+                throw new IllegalArgumentException();
+
+            this.code = code;
+            this.title = title;
+            this.credit = credit;
+            this.instructor = instructor;
+            this.rooms = rooms;
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid Course Information");
+        }
     }
 
     @Override

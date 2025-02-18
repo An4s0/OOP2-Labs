@@ -15,7 +15,7 @@ public class CourseRecord {
 
     @Override
     public String toString() {
-        return "Course Code: " + code + "\n" +
+        return  "Course Code: " + code + "\n" +
                 "Course Title: " + title + "\n" +
                 "Credit Hours: " + credit + "\n" +
                 "Instructor Name: " + instructor + "\n" +
