@@ -1,11 +1,11 @@
 public class CourseRecord {
     public String code;
     public String title;
-    public double credit;
+    public int credit;
     public String instructor;
     public int rooms;
 
-    public CourseRecord(String code, String title, double credit, String instructor, int rooms) {
+    public CourseRecord(String code, String title, int credit, String instructor, int rooms) {
         this.code = code;
         this.title = title;
         this.credit = credit;
@@ -18,7 +18,7 @@ public class CourseRecord {
         return "Course Code: " + code + "\n" +
                 "Course Title: " + title + "\n" +
                 "Credit Hours: " + credit + "\n" +
-                "Instructor Name: " + instructor + "\n" +
-                "Class Rooms: " + rooms + "\n";
+                "Instructor: " + instructor + "\n" +
+                "Rooms: " + rooms + "\n";
     }
 }

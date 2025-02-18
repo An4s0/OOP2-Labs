@@ -2,10 +2,14 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
-    private static Scanner input = new Scanner(System.in);
-    private static CourseRecord[][] courseRecords = new CourseRecord[3][5];
+    public static Scanner input = new Scanner(System.in);
+    public static CourseRecord[][] courseRecords = new CourseRecord[3][5];
 
     public static void main(String[] args) {
+
+        courseRecords[0][0] = new CourseRecord("IC101", "Introduction to Computing", 2, "Dr. One", 5);
+        courseRecords[0][1] = new CourseRecord("IS201", "Fundamentals of IS", 3, "Dr. Two", 6);
+
         while (true) {
             System.out.println("Menu:");
             System.out.println("1- Add course");
@@ -32,140 +36,145 @@ public class App {
                         printCourse();
                         break;
                     case 5:
+                        System.out.println("Program is closing...");
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("Please enter a valid choice.");
+                        System.out.println("Please enter a valid choice");
                         input.nextLine();
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Exception thrown: java.util.InputMismatchException");
-                input.nextLine(); 
+                System.out.println("Exception: " + e);
+                input.nextLine();
             }
         }
     }
 
     public static void addCourse() {
         try {
-            System.out.print("Please enter level number (1-3): ");
+            System.out.println("Adding New Course:");
+
+            System.out.println("Enter level number: ");
             int level = input.nextInt();
+            input.nextLine();
 
             if (level < 1 || level > 3) {
-                System.out.println("Level number out of range. Please enter a value between 1 and 3.");
+                System.out.println("Available levels are: 1, 2 and 3");
                 return;
             }
 
+            System.out.println("Enter course code: ");
+            String code = input.nextLine();
+
+            System.out.println("Enter course title: ");
+            String title = input.nextLine();
+
+            System.out.println("Enter credit hours: ");
+            double credit = input.nextDouble();
+
+            System.out.println("Enter instructor name: ");
+            String instructor = input.nextLine();
+            input.nextLine();
+
+            System.out.println("Enter class rooms: ");
+            int rooms = input.nextInt();
+
             for (int i = 0; i < 5; i++) {
                 if (courseRecords[level - 1][i] == null) {
-                    System.out.print("Enter Course Code: ");
-                    String code = input.next();
-
-                    input.nextLine(); 
-
-                    System.out.print("Enter Course Title: ");
-                    String title = input.nextLine();
-
-                    System.out.print("Enter Credit Hours: ");
-                    int credit = input.nextInt();
-
-                    input.nextLine(); 
-
-                    System.out.print("Enter Instructor Name: ");
-                    String instructor = input.nextLine();
-
-                    System.out.print("Enter Class Rooms: ");
-                    int rooms = input.nextInt();
-
                     courseRecords[level - 1][i] = new CourseRecord(code, title, credit, instructor, rooms);
-                    System.out.println("Course added successfully to Level " + level + ".");
+                    System.out.println("Course has been added");
                     return;
                 }
             }
-            System.out.println(
-                    "Exception thrown: java.lang.IndexOutOfBoundsException. Maximum courses reached for this level.");
+
+            throw new IndexOutOfBoundsException();
+
         } catch (InputMismatchException e) {
-            System.out.println("Exception thrown: java.util.InputMismatchException");
+            System.out.println("Input Mismatch Exception");
             input.nextLine();
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("The maximum number of courses for each level (5 courses)");
         }
     }
 
     public static void printAllCourses() {
         for (int i = 0; i < 3; i++) {
-            System.out.println("Level " + (i + 1) + ":");
-            boolean hasCourses = false;
             for (int j = 0; j < 5; j++) {
-                if (courseRecords[i][j] != null) {
-                    System.out.println(courseRecords[i][j].toString());
-                    hasCourses = true;
+                CourseRecord course = courseRecords[i][j];
+                if (course != null) {
+                    System.out.println("Level " + (i + 1) + ", Course " + (j + 1) + ": " + course.title);
                 }
             }
-            if (!hasCourses) {
-                System.out.println("No courses available.");
-            }
-            System.out.println();
         }
     }
 
     public static void updateCourse() {
-        try {
-            System.out.print("Enter level number (1-3): ");
-            int level = input.nextInt();
+        System.out.println("Enter level number: ");
+        int level = input.nextInt();
+        input.nextLine();
 
-            System.out.print("Enter Course Code to update: ");
-            String code = input.next();
-
-            boolean found = false;
-            for (int i = 0; i < 5; i++) {
-                if (courseRecords[level - 1][i] != null && courseRecords[level - 1][i].code.equals(code)) {
-                    System.out.print("Enter new Course Title: ");
-                    input.nextLine(); 
-                    String newTitle = input.nextLine();
-
-                    System.out.print("Enter new Credit Hours: ");
-                    int newCredit = input.nextInt();
-
-                    System.out.print("Enter new Instructor Name: ");
-                    input.nextLine(); 
-                    String newInstructor = input.nextLine();
-
-                    System.out.print("Enter new Class Rooms: ");
-                    int newRooms = input.nextInt();
-
-                    courseRecords[level - 1][i] = new CourseRecord(code, newTitle, newCredit, newInstructor, newRooms);
-                    System.out.println("Course record updated successfully.");
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                System.out.println("Course with code " + code + " not found in Level " + level + ".");
-            }
-        } catch (InputMismatchException | IndexOutOfBoundsException e) {
-            System.out.println("Exception thrown: " + e);
-            input.nextLine(); 
+        if (level < 1 || level > 3) {
+            System.out.println("Available levels are: 1, 2 and 3");
+            return;
         }
+
+        System.out.println("Enter course code: ");
+        String oldCode = input.nextLine();
+
+        System.out.println("Enter new course code: ");
+        String code = input.nextLine();
+
+        System.out.println("Enter new course title: ");
+        String title = input.nextLine();
+
+        System.out.println("Enter new credit hours: ");
+        double credit = input.nextDouble();
+
+        System.out.println("Enter new instructor name: ");
+        String instructor = input.nextLine();
+        input.nextLine();
+
+        System.out.println("Enter new class rooms: ");
+        int rooms = input.nextInt();
+
+        for (int i = 0; i < 5; i++) {
+            if (courseRecords[level - 1][i] != null && courseRecords[level - 1][i].code.equals(oldCode)) {
+                courseRecords[level - 1][i].code = code;
+                courseRecords[level - 1][i].title = title;
+                courseRecords[level - 1][i].credit = credit;
+                courseRecords[level - 1][i].instructor = instructor;
+                courseRecords[level - 1][i].rooms = rooms;
+
+                System.out.println("Course has been updated");
+                return;
+            }
+        }
+
+        System.out.println("Course not found");
     }
 
     public static void printCourse() {
         try {
-            System.out.print("Enter level number (1-3): ");
+            System.out.println("Enter level number: ");
             int level = input.nextInt();
-
-            System.out.print("Enter course number (1-5): ");
-            int course = input.nextInt();
-
-            CourseRecord record = courseRecords[level - 1][course - 1];
-            if (record == null) {
-                throw new NullPointerException("No course found in the specified slot.");
-            }
-            System.out.println(record.toString());
-        } catch (NullPointerException e) {
-            System.out.println("Exception thrown: java.lang.NullPointerException");
-        } catch (InputMismatchException | IndexOutOfBoundsException e) {
-            System.out.println("Exception thrown: " + e);
             input.nextLine();
+
+            if (level < 1 || level > 3) {
+                System.out.println("Available levels are: 1, 2 and 3");
+                return;
+            }
+
+            System.out.println("Enter course number: ");
+            int number = input.nextInt();
+
+            if (courseRecords[level - 1][number] != null) {
+                System.out.println(
+                        "Level " + level + ", Course " + number + ": " + courseRecords[level - 1][number].toString());
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Course not found");
         }
     }
 }
